@@ -27,6 +27,15 @@ module Lurn
           expect(subject.recall('SPAM')).to eq 0.75
         end
       end
+
+      describe "summary" do
+        it "returns a table with the metrics for each class" do
+          table = subject.summary
+
+          expected_val = "+-----------------+--------------------+--------+\n| Class           | Precision          | Recall |\n+-----------------+--------------------+--------+\n| SPAM            | 0.6                | 0.75   |\n| HAM             | 0.6666666666666666 | 0.5    |\n| Overall Average | 0.6333333333333333 | 0.625  |\n+-----------------+--------------------+--------+"
+          expect(table).to eq expected_val
+        end
+      end
     end
   end
 end

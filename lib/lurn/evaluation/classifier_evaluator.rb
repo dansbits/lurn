@@ -1,3 +1,5 @@
+require 'terminal-table'
+
 module Lurn
   module Evaluation
     class ClassifierEvaluator
@@ -33,6 +35,23 @@ module Lurn
 
       def false_negatives(cls)
         @classes.filter_rows { |r| r[:actual] == cls && r[:predicted] != cls }.size
+      end
+
+      def summary
+        headings = ['Class','Precision','Recall']
+        rows = []
+        precision_sum = 0
+        recall_sum = 0
+
+        @unique_classes.each do |cls|
+          rows << [cls, self.precision(cls), self.recall(cls)]
+          precision_sum = precision_sum + self.precision(cls)
+          recall_sum = recall_sum + self.recall(cls)
+        end
+
+        rows << ['Overall Average', precision_sum / @unique_classes.length.to_f, recall_sum / @unique_classes.length.to_f]
+
+        ::Terminal::Table.new(rows: rows, headings: headings).to_s
       end
 
       private
