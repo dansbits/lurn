@@ -1,4 +1,5 @@
 require 'terminal-table'
+require 'csv'
 
 module Lurn
   module Evaluation
@@ -39,6 +40,25 @@ module Lurn
 
       def summary
         headings = ['Class','Precision','Recall']
+
+        ::Terminal::Table.new(rows: summary_rows, headings: headings).to_s
+      end
+
+      def to_csv(file_path)
+        headings = ['Class','Precision','Recall']
+
+        CSV.open file_path, 'w' do |csv|
+          csv << headings
+
+          summary_rows.each do |row|
+            csv << row
+          end
+        end
+      end
+
+      private
+
+      def summary_rows
         rows = []
         precision_sum = 0
         recall_sum = 0
@@ -51,10 +71,8 @@ module Lurn
 
         rows << ['Overall Average', precision_sum / @unique_classes.length.to_f, recall_sum / @unique_classes.length.to_f]
 
-        ::Terminal::Table.new(rows: rows, headings: headings).to_s
+        rows
       end
-
-      private
 
       def preprocess_classes
         @classes[:accurately_predicted] = @classes.map_rows { |r| r[:predicted] == r[:actual] }
