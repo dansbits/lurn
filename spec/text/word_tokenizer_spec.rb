@@ -1,6 +1,6 @@
-require_relative "spec_helper"
+require "spec_helper"
 
-describe Lurn::WordTokenizer do
+describe Lurn::Text::WordTokenizer do
 
   let(:options) { {} }
 

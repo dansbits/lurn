@@ -1,7 +1,9 @@
 require "daru"
 require "lurn/version"
-require "lurn/word_tokenizer"
-require "lurn/count_vectorizer"
+require "lurn/text/word_tokenizer"
+require "lurn/text/count_vectorizer"
+require "lurn/text/bernoulli_vectorizer"
+require "lurn/naive_bayes/bernoulli_naive_bayes"
 require "lurn/evaluation/classifier_evaluator"
 
 module Lurn

@@ -14,6 +14,14 @@ describe Lurn::Text::CountVectorizer do
 
   let(:vectorizer) { described_class.new(documents, options) }
 
+  describe '#vocabulary' do
+    subject { vectorizer.vocabulary }
+
+    it 'returns the unique words in the corpus sorted alphabetically' do
+      expect(subject).to eq ["The", "are", "brown", "dogs", "fox", "quick", "slow", "slower", "than"]
+    end
+  end
+
   describe "#vectors" do
 
     subject { vectorizer.vectors }
