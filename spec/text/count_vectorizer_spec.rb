@@ -1,10 +1,10 @@
 require "spec_helper"
 
-describe Lurn::CountVectorizer do
+describe Lurn::Text::CountVectorizer do
 
   let(:documents) do
     [
-      "The quick brown fox",
+      "The quick brown fox quick",
       "brown dogs are slow",
       "slower than quick dogs"
     ]
@@ -19,19 +19,11 @@ describe Lurn::CountVectorizer do
     subject { vectorizer.vectors }
 
     let(:expected_vectors) do
-      counts = {
-        "The" => [1,0,0],
-        "quick" => [1,0,1],
-        "brown" => [1,1,0],
-        "fox" => [1,0,0],
-        "dogs" => [0,1,1],
-        "are" => [0,1,0],
-        "slow" => [0,1,0],
-        "slower" => [0,0,1],
-        "than" => [0,0,1],
-      }
-
-      Daru::DataFrame.new(counts)
+      [
+        [1,0,1,0,1,2,0,0,0],
+        [0,1,1,1,0,0,1,0,0],
+        [0,0,0,1,0,1,0,1,1]
+      ]
     end
 
     it "returns the tokenized documents" do

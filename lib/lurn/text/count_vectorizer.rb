@@ -5,6 +5,7 @@ module Lurn
 
     attr_accessor :tokenized_docs
     attr_accessor :tokenizer
+    attr_accessor :vocabulary
 
     def initialize(documents, options = {})
 
@@ -18,23 +19,20 @@ module Lurn
 
       @options = options
       @tokenized_docs = tokenize_documents(documents)
+      @vocabulary = @tokenized_docs.flatten.uniq.sort
     end
 
     def vectors
-      base = Hash[unique_words.zip([[]] * unique_words.count)]
-
-      base.keys.each do |word|
-        base[word] = @tokenized_docs.map { |doc| doc.select { |doc_word| doc_word == word }.count }
+      vectorized_docs = @tokenized_docs.map do |doc|
+        @vocabulary.map do |word|
+          doc.select{ |w| w == word }.count
+        end
       end
 
-      Daru::DataFrame.new(base)
+      vectorized_docs
     end
 
     private
-
-    def unique_words
-      @unique_words ||= @tokenized_docs.flatten.uniq
-    end
 
     def tokenize_documents(documents)
       documents.map { |doc| @tokenizer.tokenize(doc) }
