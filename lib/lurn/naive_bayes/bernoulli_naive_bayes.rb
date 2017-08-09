@@ -1,9 +1,10 @@
+require 'matrix'
+
 module Lurn
   module NaiveBayes
     class BernoulliNaiveBayes
 
-      attr_accessor :labels
-      attr_accessor :word_stats
+      attr_accessor :probability_matrix, :label_probbilities
 
       def initialize
         @labels = {}
@@ -12,23 +13,21 @@ module Lurn
       end
 
       def fit(vectors, labels)
-        @observation_count = vectors.length
-        @feature_count = vectors[0].length
+        vectors = Matrix.rows(vectors)
 
-        # [ "I like cars", "I dont like cars"]
-        labels.inject(@labels) do |memo, label|
-          memo[label] ||= { observation_count: 0 }
-          memo[label][:observation_count] += 1
-          memo
-        end
+        @unique_labels = labels.uniq
+        @feature_count = vectors.column_size
 
-        @labels.keys.each { |label| fit_label(label, vectors, labels) }
+        document_count_matrix = build_document_count_matrix(vectors, labels)
+        @probability_matrix = build_probability_matrix(document_count_matrix, labels)
+
+        @label_probbilities = @unique_labels.map { |l1| labels.select { |l2| l1 == l2 }.count.to_f / labels.count.to_f }
       end
 
       def predict(vector)
         probabilities = {}
 
-        @labels.keys.each do |label|
+        @unique_labels.each_with_index do |label, index|
           probabilities[label] = prob_label(vector, label)
         end
 
@@ -37,55 +36,46 @@ module Lurn
 
       private
 
-      def prob_label(vector, label)
-        word_probabilities = @labels[label][:word_probabilities]
+      def build_probability_matrix(document_count_matrix, labels)
+        probability_matrix = Array.new(@unique_labels.count) { Array.new(@feature_count) { 0.0 } }
 
-        log_prob_if_label = 0.0
-        log_prob_if_not_label = 0.0
+        document_count_matrix.each_with_index do |value, row, col|
+          label = @unique_labels[row]
+          label_frequency = labels.select { |l| l == label }.count
 
-        word_probabilities.each.with_index do |prob_pair, index|
-          if vector[index] == true
-            log_prob_if_label += Math.log(prob_pair[:prob_label])
-            log_prob_if_not_label += Math.log(prob_pair[:prob_not_label])
-          else
-            log_prob_if_label += Math.log(1.0 - prob_pair[:prob_label])
-            log_prob_if_not_label += Math.log(1.0 - prob_pair[:prob_not_label])
-          end
+          probability_matrix[row][col] = (value.to_f + @k) / (label_frequency.to_f + (2.0 * @k))
         end
 
-        prob_if_label = Math.exp(log_prob_if_label)
-        prob_if_not_label = Math.exp(log_prob_if_not_label)
-
-        prob_if_label / (prob_if_label + prob_if_not_label)
+        Matrix.rows(probability_matrix)
       end
 
-      def fit_label(label, vectors, labels)
-        @labels[label][:word_counts] = Array.new(@feature_count) { { predictor: 0, not_predictor: 0 } }
-        @labels[label][:word_probabilities] = Array.new(@feature_count) { { prob_label: 0, prob_not_label: 0 } }
+      def build_document_count_matrix(vectors, labels)
+        matrix = Array.new(@unique_labels.count) { Array.new(@feature_count) { 0 } }
 
-        # get word counts
-        vectors.each.with_index do |vector, index|
-          vector_label = labels[index]
-
-          vector.each.with_index do |feature, feature_index|
-            if feature
-              if vector_label == label
-                @labels[label][:word_counts][feature_index][:predictor] += 1
-              else
-                @labels[label][:word_counts][feature_index][:not_predictor] += 1
-              end
-            end
+        vectors.each_with_index do |value, row, col|
+          if value == true
+            label = labels[row]
+            label_index = @unique_labels.index(label)
+            matrix[label_index][col] += 1
           end
         end
 
-        # get word probabilities
-        @labels[label][:word_counts].each.with_index do |count_pair, feature_index|
-          prob_label = (count_pair[:predictor] + @k) / (@labels[label][:observation_count] + @k * 2)
-          @labels[label][:word_probabilities][feature_index][:prob_label] = prob_label
+        Matrix.rows(matrix)
+      end
 
-          prob_not_label = (count_pair[:not_predictor] + @k) / ((@observation_count - @labels[label][:observation_count]) + @k * 2.0)
-          @labels[label][:word_probabilities][feature_index][:prob_not_label] = prob_not_label
+      def prob_label(vector, label)
+        label_index = @unique_labels.index(label)
+
+        probabilities = @probability_matrix.row(label_index)
+
+        score = Math.log(@label_probbilities[label_index])
+
+        vector.each_with_index do |value, index|
+          presence = value == true ? 1 : 0
+          score = score * Math.log(((presence * probabilities[index]) + (1 - presence)*(1 - probabilities[index])))
         end
+
+        Math.exp(score)
       end
 
     end
