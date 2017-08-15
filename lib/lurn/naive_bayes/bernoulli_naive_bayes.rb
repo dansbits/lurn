@@ -4,11 +4,9 @@ module Lurn
   module NaiveBayes
     class BernoulliNaiveBayes
 
-      attr_accessor :probability_matrix, :label_probbilities
+      attr_accessor :probability_matrix, :label_probabilities
 
       def initialize
-        @labels = {}
-        @word_stats = []
         @k = 1.0
       end
 
@@ -21,17 +19,24 @@ module Lurn
         document_count_matrix = build_document_count_matrix(vectors, labels)
         @probability_matrix = build_probability_matrix(document_count_matrix, labels)
 
-        @label_probbilities = @unique_labels.map { |l1| labels.select { |l2| l1 == l2 }.count.to_f / labels.count.to_f }
+        @label_probabilities = @unique_labels.map { |l1| labels.select { |l2| l1 == l2 }.count.to_f / labels.count.to_f }
       end
 
-      def predict(vector)
-        probabilities = {}
+      def predict_probabilities(vector)
+        log_probabilties = predict_log_probabilities(vector)
 
-        @unique_labels.each_with_index do |label, index|
-          probabilities[label] = prob_label(vector, label)
+        log_probabilties.map { |p| Math.exp(p) }
+      end
+
+      def predict_log_probabilities(vector)
+
+        probabilities = @unique_labels.map do |label|
+          joint_log_likelihood(vector, label)
         end
 
-        probabilities
+        log_prob_x = Math.log(probabilities.map { |v| Math.exp(v) }.sum)
+
+        probabilities.map { |p| p - log_prob_x }
       end
 
       private
@@ -43,7 +48,7 @@ module Lurn
           label = @unique_labels[row]
           label_frequency = labels.select { |l| l == label }.count
 
-          probability_matrix[row][col] = (value.to_f + @k) / (label_frequency.to_f + (2.0 * @k))
+          probability_matrix[row][col] = Math.log((value.to_f + @k) / (label_frequency.to_f + (2.0 * @k)))
         end
 
         Matrix.rows(probability_matrix)
@@ -63,19 +68,16 @@ module Lurn
         Matrix.rows(matrix)
       end
 
-      def prob_label(vector, label)
+      def joint_log_likelihood(vector, label)
         label_index = @unique_labels.index(label)
 
+        vector = Vector.elements(vector.map { |e| e == true ? 1 : 0 })
         probabilities = @probability_matrix.row(label_index)
+        neg_probs = probabilities.map { |prb| Math.log(1.0 - Math.exp(prb)) }
+        jll = vector.dot(probabilities - neg_probs)
+        jll += Math.log(@label_probabilities[label_index]) + neg_probs.sum
 
-        score = Math.log(@label_probbilities[label_index])
-
-        vector.each_with_index do |value, index|
-          presence = value == true ? 1 : 0
-          score = score * Math.log(((presence * probabilities[index]) + (1 - presence)*(1 - probabilities[index])))
-        end
-
-        Math.exp(score)
+        jll
       end
 
     end

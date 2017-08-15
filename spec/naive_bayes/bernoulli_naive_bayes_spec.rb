@@ -39,17 +39,30 @@ describe Lurn::NaiveBayes::BernoulliNaiveBayes do
     it "trains the model" do
       classifier.fit(vectors, classes)
 
-      expect(classifier.probability_matrix.row(0)).to eq Vector[0.5, 0.25, 0.375, 0.5, 0.5, 0.625, 0.625, 0.625]
-      expect(classifier.probability_matrix.row(1)).to eq Vector[2.0 / 7.0, 4.0 / 7.0, 4.0 / 7.0, 2.0 / 7.0, 2.0 / 7.0, 2.0 / 7.0, 4.0 / 7.0, 2.0 / 7.0]
+      expect(classifier.probability_matrix.row(0)).to eq Vector[0.5, 0.25, 0.375, 0.5, 0.5, 0.625, 0.625, 0.625].map { |p| Math.log(p) }
+      expect(classifier.probability_matrix.row(1)).to eq Vector[2.0 / 7.0, 4.0 / 7.0, 4.0 / 7.0, 2.0 / 7.0, 2.0 / 7.0, 2.0 / 7.0, 4.0 / 7.0, 2.0 / 7.0].map { |p| Math.log(p) }
 
-      expect(classifier.label_probbilities).to eq [6.0 / 11.0, 5.0 / 11.0]
+      expect(classifier.label_probabilities).to eq [6.0 / 11.0, 5.0 / 11.0]
     end
   end
 
-  describe "#predict" do
+  describe "#predict_log_probabilities" do
+
+    let(:test_vector) { [true, false, false, true, true, true, false, true] }
+    let(:expected_probabilities) { [-0.014446570807947978, -4.244512796359803] }
     it "returns the class with the highest probblility for each given document" do
       classifier.fit(vectors, classes)
-      expect(classifier.predict([true, false, false, true, true, true, false, true])).to eq({"sports"=>0.9941037938060029, "informatics"=>0.22766145652867642})
+      expect(classifier.predict_log_probabilities(test_vector)).to eq(expected_probabilities)
+    end
+  end
+
+  describe "#predict_probabilities" do
+
+    let(:test_vector) { [true, false, false, true, true, true, false, true] }
+    let(:expected_probabilities) { [0.9856572801976612, 0.014342719802338963] }
+    it "returns the class with the highest probblility for each given document" do
+      classifier.fit(vectors, classes)
+      expect(classifier.predict_probabilities(test_vector)).to eq(expected_probabilities)
     end
   end
 end
