@@ -18,4 +18,12 @@ describe Lurn::Text::WordTokenizer do
     end
   end
 
+  context "when stem_words is true" do
+    let(:options) { { stem_words: true } }
+
+    it 'stems the words' do
+      expect(subject.tokenize('my house is painted')).to eq ['my','hous','is','paint']
+    end
+  end
+
 end

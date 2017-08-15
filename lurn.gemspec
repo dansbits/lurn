@@ -30,8 +30,8 @@ Gem::Specification.new do |spec|
   spec.executables   = spec.files.grep(%r{^exe/}) { |f| File.basename(f) }
   spec.require_paths = ["lib"]
 
-  spec.add_dependency "daru", "~> 0.1.4.1"
   spec.add_dependency "terminal-table", "~> 1.7.3"
+  spec.add_dependency "ruby-stemmer", "~> 0.9.6"
 
   spec.add_development_dependency "bundler", "~> 1.13"
   spec.add_development_dependency "rake", "~> 10.0"
