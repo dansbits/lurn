@@ -4,7 +4,7 @@ module Lurn
   module NaiveBayes
     class BernoulliNaiveBayes
 
-      attr_accessor :probability_matrix, :label_probabilities
+      attr_accessor :probability_matrix, :label_probabilities, :unique_labels
 
       def initialize
         @k = 1.0
@@ -37,6 +37,14 @@ module Lurn
         log_prob_x = Math.log(probabilities.map { |v| Math.exp(v) }.sum)
 
         probabilities.map { |p| p - log_prob_x }
+      end
+
+      def to_h
+        {
+          probability_matrix: probability_matrix.to_a,
+          label_probabilities: label_probabilities,
+          unique_labels: unique_labels
+        }
       end
 
       private

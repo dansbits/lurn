@@ -46,6 +46,30 @@ describe Lurn::NaiveBayes::BernoulliNaiveBayes do
     end
   end
 
+  describe '#to_h' do
+
+    let(:model) do
+      m = Lurn::NaiveBayes::BernoulliNaiveBayes.new
+      m.fit(vectors, classes)
+      m
+    end
+
+    subject { model.to_h }
+
+    let(:expected_hash) {
+      {
+        probability_matrix: model.probability_matrix.to_a,
+        label_probabilities: model.label_probabilities,
+        unique_labels: model.unique_labels
+      }
+    }
+
+    it "returns a json representation of the model" do
+      hash = subject
+      expect(subject).to eq expected_hash
+    end
+  end
+
   describe "#predict_log_probabilities" do
 
     let(:test_vector) { [true, false, false, true, true, true, false, true] }
