@@ -36,6 +36,22 @@ describe Lurn::Text::BernoulliVectorizer do
     end
   end
 
+  describe '#to_h' do
+
+    let(:expected_hash) {
+      {
+        tokenizer_options: { strip_punctuation: false, strip_stopwords: false },
+        vocabulary: expected_vocab
+      }
+    }
+
+    before { vectorizer.fit(documents) }
+
+    it 'returns a hash representation of the vectorizer' do
+      expect(vectorizer.to_h).to eq expected_hash
+    end
+  end
+
   describe '#transform' do
 
     before { vectorizer.fit(documents) }
@@ -54,5 +70,5 @@ describe Lurn::Text::BernoulliVectorizer do
       expect(subject).to eq expected_vectors
     end
   end
-  
+
 end

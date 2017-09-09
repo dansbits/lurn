@@ -4,6 +4,8 @@ module Lurn
   module Text
     class WordTokenizer
 
+      attr_accessor :options
+
       STOP_WORDS = %w[
         a about above after again against all am an and any are aren't as at be
         because been before being below between both but by can't cannot could
@@ -30,6 +32,10 @@ module Lurn
         end
 
         document
+      end
+
+      def to_h
+        options
       end
     end
   end

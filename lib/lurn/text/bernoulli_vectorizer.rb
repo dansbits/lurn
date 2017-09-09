@@ -18,6 +18,13 @@ module Lurn
         @vocabulary = tokenized_docs.flatten.uniq.sort
       end
 
+      def to_h
+        {
+          tokenizer_options: @tokenizer.to_h,
+          vocabulary: @vocabulary
+        }
+      end
+
       def transform(documents)
         documents.map do |document|
           tokens = @tokenizer.tokenize(document)
