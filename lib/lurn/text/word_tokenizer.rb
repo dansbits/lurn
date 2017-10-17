@@ -20,6 +20,7 @@ module Lurn
         @options = options
         @options[:strip_punctuation] ||= false
         @options[:strip_stopwords] ||= false
+        @options[:stem_words] ||= false
       end
 
       def tokenize(document)

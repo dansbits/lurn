@@ -34,6 +34,48 @@ describe Lurn::Text::BernoulliVectorizer do
         expect{ subject }.to change { vectorizer.vocabulary }.from(previous_vocab).to(expected_vocab)
       end
     end
+
+    describe 'options' do
+      describe 'max_df' do
+        let(:documents) do
+          [
+            "firefox is mozilla's browser",
+            "edge is microsoft's browser",
+            "chrome is google's browser",
+            "safari is apple's browser"
+          ]
+        end
+
+        let(:expected_vocab) { %w[ firefox mozilla's edge microsoft's chrome google's safari apple's] }
+
+        let(:options) { { max_df: 3 }}
+
+        it "removes words which appear in more than max_df documents" do
+          subject
+          expect(vectorizer.vocabulary).to match_array expected_vocab
+        end
+      end
+
+      describe 'min_df' do
+        let(:documents) do
+          [
+            "firefox is mozilla's browser",
+            "edge is microsoft's browser",
+            "chrome is google's browser",
+            "safari is apple's browser"
+          ]
+        end
+
+        let(:expected_vocab) { %w[ is browser ] }
+
+        let(:options) { { min_df: 3 }}
+
+        it "removes words which appear in fewer than min_df documents" do
+          subject
+          expect(vectorizer.vocabulary).to match_array expected_vocab
+        end
+      end
+    end
   end
 
   describe '#to_h' do
