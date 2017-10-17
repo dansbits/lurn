@@ -1,8 +1,7 @@
 # Lurn
 
-Welcome to your new gem! In this directory, you'll find the files you need to be able to package up your Ruby library into a gem. Put your Ruby code in the file `lib/lurn`. To experiment with that code, run `bin/console` for an interactive prompt.
-
-TODO: Delete this and the text above, and describe your gem
+Lurn is a ruby gem for performing machine learning. The API and design patterns
+in Lurn are inspired by sklearn, an analogous library for Python.
 
 ## Installation
 
@@ -22,7 +21,37 @@ Or install it yourself as:
 
 ## Usage
 
-TODO: Write usage instructions here
+### Bernoulli Naive Bayes
+```ruby
+require 'lurn'
+
+documents = [
+  'ruby is a great programming language',
+  'the giants recently won the world series',
+  'java is a compiled programming language',
+  'the jets are a football team'
+]
+
+labels = ['computers','sports','computers','sports']
+
+# vectorizers take raw data and transform it to a set of features that our
+# model can understand - in this case an array of boolean values representing
+# the presence or absence of a word in text
+vectorizer = Lurn::Text::BernoulliVectorizer.new
+vectorizer.fit(documents)
+vectors = vectorizer.transform(documents)
+
+model = Lurn::NaiveBayes::BernoulliNaiveBayes.new
+model.fit(vectors, labels)
+
+new_vectors = vectorizer.transform(['programming is fun'])
+probabilities = model.predict_probabilities(new_vectors.first)
+# => [0.9715681919147049, 0.028431808085295614]
+
+# to get the class of the maximum probability, look at the same index of the
+# unique_labels attribute on the model
+model.unique_labels[0] # => 'computers'
+```
 
 ## Development
 
