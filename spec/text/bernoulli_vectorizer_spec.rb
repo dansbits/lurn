@@ -82,7 +82,7 @@ describe Lurn::Text::BernoulliVectorizer do
 
     let(:expected_hash) {
       {
-        tokenizer_options: { strip_punctuation: false, strip_stopwords: false },
+        tokenizer_options: { strip_punctuation: false, strip_stopwords: false, stem_words: false },
         vocabulary: expected_vocab
       }
     }
