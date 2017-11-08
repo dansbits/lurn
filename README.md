@@ -1,7 +1,6 @@
 # Lurn
 
-Lurn is a ruby gem for performing machine learning. The API and design patterns
-in Lurn are inspired by sklearn, an analogous library for Python.
+Lurn is a ruby gem for performing machine learning. The API and design patterns in Lurn are inspired by sklearn, an analogous library for Python.
 
 ## Installation
 
