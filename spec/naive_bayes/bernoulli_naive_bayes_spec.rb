@@ -89,4 +89,23 @@ describe Lurn::NaiveBayes::BernoulliNaiveBayes do
       expect(classifier.predict_probabilities(test_vector)).to eq(expected_probabilities)
     end
   end
+
+  describe '#max_probability' do
+    let(:test_vector) { [true, false, false, true, true, true, false, true] }
+    let(:expected_probability) { 0.9856572801976612 }
+
+    it "returns the class with the highest probblility for each given document" do
+      classifier.fit(vectors, classes)
+      expect(classifier.max_probability(test_vector)).to eq(expected_probability)
+    end
+  end
+
+  describe '#max_class' do
+    let(:test_vector) { [true, false, false, true, true, true, false, true] }
+    let(:expected_class) { 'informatics' }
+    it "returns the class with the highest probblility for each given document" do
+      classifier.fit(vectors, classes)
+      expect(classifier.max_class(test_vector)).to eq(expected_class)
+    end
+  end
 end

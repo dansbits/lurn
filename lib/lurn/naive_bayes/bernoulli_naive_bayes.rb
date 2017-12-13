@@ -39,6 +39,20 @@ module Lurn
         probabilities.map { |p| p - log_prob_x }
       end
 
+      def max_class(vector)
+        log_probs = predict_log_probabilities(vector)
+
+        max_index = log_probs.index(log_probs.max)
+
+        unique_labels[max_index]
+      end
+
+      def max_probability(vector)
+        probs = predict_probabilities(vector)
+
+        probs.max
+      end
+
       def to_h
         {
           probability_matrix: probability_matrix.to_a,
