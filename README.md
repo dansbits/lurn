@@ -47,9 +47,8 @@ new_vectors = vectorizer.transform(['programming is fun'])
 probabilities = model.predict_probabilities(new_vectors.first)
 # => [0.9715681919147049, 0.028431808085295614]
 
-# to get the class of the maximum probability, look at the same index of the
-# unique_labels attribute on the model
-model.unique_labels[0] # => 'computers'
+# get the class of the maximum probability
+model.max_class(new_vectors.first)
 ```
 
 ## Development
