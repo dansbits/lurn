@@ -25,7 +25,7 @@ module Lurn
 
       def tokenize(document)
         document = document.gsub(/[[:punct:]]/, '') if @options[:strip_punctuation] == true
-        document = document.gsub(/\s+/, ' ').split(" ")
+        document = document.split("\s")
 
         if(@options[:stem_words])
           stemmer = Lingua::Stemmer.new(language: :en)
