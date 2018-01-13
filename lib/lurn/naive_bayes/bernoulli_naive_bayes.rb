@@ -64,7 +64,7 @@ module Lurn
       private
 
       def build_probability_matrix(document_count_matrix, labels)
-        probability_matrix = Array.new(@unique_labels.count) { Array.new(@feature_count) { 0.0 } }
+        probability_matrix = Array.new(@unique_labels.count) { Array.new(@feature_count, 0.0) }
 
         document_count_matrix.each_with_index do |value, row, col|
           label = @unique_labels[row]
@@ -77,7 +77,7 @@ module Lurn
       end
 
       def build_document_count_matrix(vectors, labels)
-        matrix = Array.new(@unique_labels.count) { Array.new(@feature_count) { 0 } }
+        matrix = Array.new(@unique_labels.count) { Array.new(@feature_count, 0) }
 
         vectors.each_with_index do |value, row, col|
           if value == true
