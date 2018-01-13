@@ -19,7 +19,7 @@ module Lurn
         document_count_matrix = build_document_count_matrix(vectors, labels)
         @probability_matrix = build_probability_matrix(document_count_matrix, labels)
 
-        @label_probabilities = @unique_labels.map { |l1| labels.select { |l2| l1 == l2 }.count.to_f / labels.count.to_f }
+        @label_probabilities = @unique_labels.map { |l1| labels.count { |l2| l1 == l2 }.to_f / labels.count.to_f }
       end
 
       def predict_probabilities(vector)
@@ -68,7 +68,7 @@ module Lurn
 
         document_count_matrix.each_with_index do |value, row, col|
           label = @unique_labels[row]
-          label_frequency = labels.select { |l| l == label }.count
+          label_frequency = labels.count(label)
 
           probability_matrix[row][col] = Math.log((value.to_f + @k) / (label_frequency.to_f + (2.0 * @k)))
         end
