@@ -2,14 +2,13 @@ require "spec_helper"
 
 describe Lurn::Text::WordTokenizer do
 
-  describe '#tokenize' do
-
+  describe "#tokenize" do
     let(:options) { {} }
 
     subject { described_class.new(options) }
 
     it "splits the document into words by splitting on white space" do
-      expect(subject.tokenize("\nhello \tworld ")).to eq ["hello","world"]
+      expect(subject.tokenize("\nhello \tworld ")).to eq ["hello", "world"]
     end
 
     context "when strip_punctuation is true" do
@@ -29,7 +28,7 @@ describe Lurn::Text::WordTokenizer do
     end
   end
 
-  describe '#to_h' do
+  describe "#to_h" do
     let(:options) { { strip_punctuation: true, strip_stopwords: true } }
 
     subject { Lurn::Text::WordTokenizer.new(options).to_h }

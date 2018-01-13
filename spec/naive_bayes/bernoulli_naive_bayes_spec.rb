@@ -4,18 +4,18 @@ require "awesome_print"
 describe Lurn::NaiveBayes::BernoulliNaiveBayes do
 
   let(:classes) {
-    [
-      'sports',
-      'sports',
-      'sports',
-      'sports',
-      'sports',
-      'sports',
-      'informatics',
-      'informatics',
-      'informatics',
-      'informatics',
-      'informatics'
+    %w[
+      sports
+      sports
+      sports
+      sports
+      sports
+      sports
+      informatics
+      informatics
+      informatics
+      informatics
+      informatics
     ]
   }
 
@@ -30,7 +30,7 @@ describe Lurn::NaiveBayes::BernoulliNaiveBayes do
     [true,true,false,true,false,false,true,true],
     [false,true,true,false,false,true,false,false],
     [false,false,false,false,false,false,false,false],
-    [false,false,true,false,true,false,true,false]
+    [false,false,true,false,true,false,true,false],
   ]}
 
   let(:classifier) { described_class.new }
@@ -46,7 +46,7 @@ describe Lurn::NaiveBayes::BernoulliNaiveBayes do
     end
   end
 
-  describe '#to_h' do
+  describe "#to_h" do
 
     let(:model) do
       m = Lurn::NaiveBayes::BernoulliNaiveBayes.new
@@ -56,13 +56,13 @@ describe Lurn::NaiveBayes::BernoulliNaiveBayes do
 
     subject { model.to_h }
 
-    let(:expected_hash) {
+    let(:expected_hash) do
       {
         probability_matrix: model.probability_matrix.to_a,
         label_probabilities: model.label_probabilities,
         unique_labels: model.unique_labels
       }
-    }
+    end
 
     it "returns a json representation of the model" do
       hash = subject
@@ -90,7 +90,7 @@ describe Lurn::NaiveBayes::BernoulliNaiveBayes do
     end
   end
 
-  describe '#max_probability' do
+  describe "#max_probability" do
     let(:test_vector) { [true, false, false, true, true, true, false, true] }
     let(:expected_probability) { 0.9856572801976612 }
 
@@ -100,7 +100,7 @@ describe Lurn::NaiveBayes::BernoulliNaiveBayes do
     end
   end
 
-  describe '#max_class' do
+  describe "#max_class" do
     let(:test_vector) { [true, false, false, true, true, true, false, true] }
     let(:expected_class) { 'informatics' }
     it "returns the class with the highest probblility for each given document" do

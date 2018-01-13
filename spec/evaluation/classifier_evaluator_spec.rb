@@ -16,7 +16,6 @@ module Lurn
       end
 
       describe "#precision" do
-
         it "returns the computed precision for the given class" do
           expect(subject.precision('SPAM')).to eq 0.6
         end

@@ -1,12 +1,12 @@
-require 'spec_helper'
+require "spec_helper"
 
 describe Lurn::Text::BernoulliVectorizer do
 
   let(:documents) do
     [
-      'The quick brown fox quick',
-      'brown dogs are slow',
-      'slower than quick dogs'
+      "The quick brown fox quick",
+      "brown dogs are slow",
+      "slower than quick dogs",
     ]
   end
 
@@ -14,39 +14,39 @@ describe Lurn::Text::BernoulliVectorizer do
 
   let(:vectorizer) { described_class.new(options) }
 
-  let(:expected_vocab) { ['The', 'are', 'brown', 'dogs', 'fox', 'quick', 'slow', 'slower', 'than'] }
+  let(:expected_vocab) { %w[ The are brown dogs fox quick slow slower than ] }
 
-  describe '#fit' do
+  describe "#fit" do
     subject { vectorizer.fit(documents) }
 
-    it 'builds the vocabulary based on the provided documents' do
+    it "builds the vocabulary based on the provided documents" do
       expect(vectorizer.vocabulary).to eq []
       subject
       expect(vectorizer.vocabulary).to eq expected_vocab
     end
 
-    context 'when the vectorizer was previously trained' do
-      before { vectorizer.fit(['different words','dont match']) }
+    context "when the vectorizer was previously trained" do
+      before { vectorizer.fit( ["different words", "dont match"] ) }
 
-      let(:previous_vocab) { ['different','dont','match','words'] }
+      let(:previous_vocab) { %w[ different dont match words ] }
 
-      it 'overwrites teh previous vocabulary' do
+      it "overwrites teh previous vocabulary" do
         expect{ subject }.to change { vectorizer.vocabulary }.from(previous_vocab).to(expected_vocab)
       end
     end
 
-    describe 'options' do
-      describe 'max_df' do
+    describe "options" do
+      describe "max_df" do
         let(:documents) do
           [
             "firefox is mozilla's browser",
             "edge is microsoft's browser",
             "chrome is google's browser",
-            "safari is apple's browser"
+            "safari is apple's browser",
           ]
         end
 
-        let(:expected_vocab) { %w[ firefox mozilla's edge microsoft's chrome google's safari apple's] }
+        let(:expected_vocab) { %w[ firefox mozilla's edge microsoft's chrome google's safari apple's ] }
 
         let(:options) { { max_df: 3 }}
 
@@ -56,19 +56,19 @@ describe Lurn::Text::BernoulliVectorizer do
         end
       end
 
-      describe 'min_df' do
+      describe "min_df" do
         let(:documents) do
           [
             "firefox is mozilla's browser",
             "edge is microsoft's browser",
             "chrome is google's browser",
-            "safari is apple's browser"
+            "safari is apple's browser",
           ]
         end
 
         let(:expected_vocab) { %w[ is browser ] }
 
-        let(:options) { { min_df: 3 }}
+        let(:options) { { min_df: 3 } }
 
         it "removes words which appear in fewer than min_df documents" do
           subject
@@ -78,7 +78,7 @@ describe Lurn::Text::BernoulliVectorizer do
     end
   end
 
-  describe '#to_h' do
+  describe "#to_h" do
 
     let(:expected_hash) {
       {
@@ -89,12 +89,12 @@ describe Lurn::Text::BernoulliVectorizer do
 
     before { vectorizer.fit(documents) }
 
-    it 'returns a hash representation of the vectorizer' do
+    it "returns a hash representation of the vectorizer" do
       expect(vectorizer.to_h).to eq expected_hash
     end
   end
 
-  describe '#transform' do
+  describe "#transform" do
 
     before { vectorizer.fit(documents) }
 
@@ -104,11 +104,11 @@ describe Lurn::Text::BernoulliVectorizer do
       [
         [true,false,true,false,true,true,false,false,false],
         [false,true,true,true,false,false,true,false,false],
-        [false,false,false,true,false,true,false,true,true]
+        [false,false,false,true,false,true,false,true,true],
       ]
     end
 
-    it 'returns the tokenized documents' do
+    it "returns the tokenized documents" do
       expect(subject).to eq expected_vectors
     end
   end
