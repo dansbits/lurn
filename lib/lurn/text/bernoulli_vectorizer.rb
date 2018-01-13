@@ -49,12 +49,9 @@ module Lurn
           end
         end
 
-        reduced_features = []
-        @vocabulary.each_with_index do |token, index|
+        reduced_features = @vocabulary.select.with_index do |token, index|
           freq = doc_frequencies[index]
-          if freq < @options[:max_df] && freq > @options[:min_df]
-            reduced_features.push token
-          end
+          @options[:min_df] < freq && freq < @options[:max_df]
         end
 
         @vocabulary = reduced_features
