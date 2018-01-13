@@ -24,7 +24,7 @@ module Lurn
       end
 
       def tokenize(document)
-        document = document.gsub(/[[:punct:]]/, '') if @options[:strip_punctuation] == true
+        document = document.gsub(/[[:punct:]]/, "") if @options[:strip_punctuation] == true
         document = document.split("\s")
 
         if(@options[:stem_words])
