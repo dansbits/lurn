@@ -102,7 +102,7 @@ describe Lurn::NaiveBayes::BernoulliNaiveBayes do
 
   describe "#max_class" do
     let(:test_vector) { [true, false, false, true, true, true, false, true] }
-    let(:expected_class) { 'informatics' }
+    let(:expected_class) { "sports" }
     it "returns the class with the highest probblility for each given document" do
       classifier.fit(vectors, classes)
       expect(classifier.max_class(test_vector)).to eq(expected_class)
