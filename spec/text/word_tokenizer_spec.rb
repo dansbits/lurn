@@ -26,6 +26,15 @@ describe Lurn::Text::WordTokenizer do
         expect(subject.tokenize("  my house is painted  ")).to eq %w[ my hous is paint ]
       end
     end
+
+    context "when ngrams is greater than 1" do
+      let(:options) { { ngrams: 2 } }
+
+      it "returns ngram tokens instead of indidividual words" do
+        ngrams = subject.tokenize("pizza is great")
+        expect(ngrams).to eq [["pizza", "is"],["is","great"]]
+      end
+    end
   end
 
   describe "#to_h" do

@@ -21,6 +21,7 @@ module Lurn
         @options[:strip_punctuation] ||= false
         @options[:strip_stopwords] ||= false
         @options[:stem_words] ||= false
+        @options[:ngrams] ||= 1
       end
 
       def tokenize(document)
@@ -30,6 +31,10 @@ module Lurn
         if(@options[:stem_words])
           stemmer = Lingua::Stemmer.new(language: :en)
           document = document.map { |word| stemmer.stem(word) }
+        end
+
+        if(@options[:ngrams] > 1)
+          document = document.each_cons(@options[:ngrams]).to_a
         end
 
         document

@@ -1,6 +1,6 @@
 # Lurn
 
-Lurn is a ruby gem for performing machine learning. The API and design patterns in Lurn are inspired by sklearn, an analogous library for Python.
+Lurn is a ruby gem for performing machine learning tasks. The API and design patterns in Lurn are inspired by scikit-learn, a popular machine learning library for Python.
 
 ## Installation
 
@@ -44,8 +44,6 @@ model = Lurn::NaiveBayes::BernoulliNaiveBayes.new
 model.fit(vectors, labels)
 
 new_vectors = vectorizer.transform(['programming is fun'])
-probabilities = model.predict_probabilities(new_vectors.first)
-# => [0.9715681919147049, 0.028431808085295614]
 
 # get the class of the maximum probability
 model.max_class(new_vectors.first)
