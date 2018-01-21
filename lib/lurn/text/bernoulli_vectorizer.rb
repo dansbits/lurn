@@ -17,7 +17,7 @@ module Lurn
       def fit(documents)
         @vocabulary = []
         tokenized_docs = tokenize_documents(documents)
-        @vocabulary = tokenized_docs.flatten.uniq.sort
+        @vocabulary = tokenized_docs.flatten(1).uniq.sort
         reduce_features(tokenized_docs)
       end
 
