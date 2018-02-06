@@ -20,34 +20,12 @@ Or install it yourself as:
 
 ## Usage
 
-### Bernoulli Naive Bayes
-```ruby
-require 'lurn'
-
-documents = [
-  'ruby is a great programming language',
-  'the giants recently won the world series',
-  'java is a compiled programming language',
-  'the jets are a football team'
-]
-
-labels = ['computers','sports','computers','sports']
-
-# vectorizers take raw data and transform it to a set of features that our
-# model can understand - in this case an array of boolean values representing
-# the presence or absence of a word in text
-vectorizer = Lurn::Text::BernoulliVectorizer.new
-vectorizer.fit(documents)
-vectors = vectorizer.transform(documents)
-
-model = Lurn::NaiveBayes::BernoulliNaiveBayes.new
-model.fit(vectors, labels)
-
-new_vectors = vectorizer.transform(['programming is fun'])
-
-# get the class of the maximum probability
-model.max_class(new_vectors.first)
-```
+- Naive Bayes
+  - [Bernoulli Naive Bayes](readmes/naive_bayes/bernoulli_naive_bayes.md)
+- Text Processing
+  - [Bernoulli Vectorizer](readmes/text_processing/bernoulli_vectorizer.md)
+- Model Evaluation
+  - [ClassifierEvaluator](readmes/evaluation/classifier_evaluator.md)
 
 ## Development
 
