@@ -36,7 +36,7 @@ module Lurn
           { distance: euclidian_distance(p, vector), value: targets[index] }
         end
 
-        distances.sort { |x,y| x[:distance] <=> y[:distance] }
+        distances.sort! { |x,y| x[:distance] <=> y[:distance] }
 
         neighbors = distances.first(@k).map { |pair| pair[:value] }
 
