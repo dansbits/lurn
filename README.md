@@ -22,6 +22,8 @@ Or install it yourself as:
 
 - Naive Bayes
   - [Bernoulli Naive Bayes](readmes/naive_bayes/bernoulli_naive_bayes.md)
+- Nearest Neighbor Models
+  - [K Nearest Neighbor Regression](readmes/neighbors/knn_regression.md)
 - Text Processing
   - [Bernoulli Vectorizer](readmes/text_processing/bernoulli_vectorizer.md)
 - Model Evaluation
