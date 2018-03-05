@@ -33,7 +33,7 @@ describe Lurn::Neighbors::KNNRegression do
     end
 
     it "returns the average of the nearest neighbors" do
-      expect(regression.predict(obs4)).to eq((10 + 15) / 2)
+      expect(regression.predict(obs4)).to eq((10.0 + 15.0) / 2.0)
     end
   end
 
