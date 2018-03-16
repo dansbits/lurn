@@ -2,22 +2,6 @@ require "spec_helper"
 
 describe Lurn::Neighbors::KNNRegression do
 
-  describe "#fit" do
-    let(:regression) { Lurn::Neighbors::KNNRegression.new(2) }
-    let(:target) { [3,4] }
-    let(:obs1) { [2,3,4] }
-    let(:obs2) { [4,5,6] }
-    let(:predictors) { [obs1, obs2] }
-
-    subject { regression.fit(predictors, target) }
-
-    it "stores targets and converts predictors into vectors" do
-      subject
-      expect(regression.predictors).to eq([Vector.elements(obs1), Vector.elements(obs2)])
-      expect(regression.targets).to eq target
-    end
-  end
-
   describe "#predict" do
     let(:regression) { Lurn::Neighbors::KNNRegression.new 2 }
 
