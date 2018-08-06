@@ -14,7 +14,7 @@ people's annual income based on their age and years of eduction.
 
   ```ruby
   people = [
-    # age   years of eduction  annual income
+    # age   years of education  annual income
     [ 25,   4,                 50000],
     [ 35,   6,                 60000],
     [ 51,   2,                 40000],
@@ -39,7 +39,7 @@ instance of the KNNRegression model.
   model.fit(predictors, target_var)
 ```
 
-The model can not be used to predict the income of a person given his/her
+The model can now be used to predict the income of a person given his/her
 age and years of education.
 
 ```ruby
