@@ -1,6 +1,6 @@
 module Lurn
   module NaiveBayes
-    class MultinomialNaiveBayes
+    class MultinomialNaiveBayes < Base
 
       attr_accessor :prior_probabilities, :probability_matrix, :unique_labels
 
@@ -18,34 +18,6 @@ module Lurn
         @prior_probabilities = @unique_labels.map do |l1|
           labels.count { |l2| l1 == l2 }.to_f / labels.count.to_f
         end
-      end
-
-      def predict_probabilities(vector)
-        log_probabilties = predict_log_probabilities(vector)
-
-        log_probabilties.map { |p| Math.exp(p) }
-      end
-
-      def predict_log_probabilities(vector)
-        vector = Vector.elements(vector)
-        jll = joint_log_likelihood(vector)
-
-        log_prob_x = Math.log(jll.map { |v| Math.exp(v) }.sum)
-        jll.map{ |v| v - log_prob_x }
-      end
-
-      def max_class(vector)
-        log_probs = predict_log_probabilities(vector)
-
-        max_index = log_probs.index(log_probs.max)
-
-        unique_labels[max_index]
-      end
-
-      def max_probability(vector)
-        probs = predict_probabilities(vector)
-
-        probs.max
       end
 
       private
