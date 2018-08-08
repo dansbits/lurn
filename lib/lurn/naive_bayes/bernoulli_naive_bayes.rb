@@ -2,7 +2,7 @@ require 'matrix'
 
 module Lurn
   module NaiveBayes
-    class BernoulliNaiveBayes
+    class BernoulliNaiveBayes < Base
 
       attr_accessor :probability_matrix, :label_probabilities, :unique_labels
 
@@ -20,37 +20,6 @@ module Lurn
         @probability_matrix = build_probability_matrix(document_count_matrix, labels)
 
         @label_probabilities = @unique_labels.map { |l1| labels.count { |l2| l1 == l2 }.to_f / labels.count.to_f }
-      end
-
-      def predict_probabilities(vector)
-        log_probabilties = predict_log_probabilities(vector)
-
-        log_probabilties.map { |p| Math.exp(p) }
-      end
-
-      def predict_log_probabilities(vector)
-
-        probabilities = @unique_labels.map do |label|
-          joint_log_likelihood(vector, label)
-        end
-
-        log_prob_x = Math.log(probabilities.map { |v| Math.exp(v) }.sum)
-
-        probabilities.map { |p| p - log_prob_x }
-      end
-
-      def max_class(vector)
-        log_probs = predict_log_probabilities(vector)
-
-        max_index = log_probs.index(log_probs.max)
-
-        unique_labels[max_index]
-      end
-
-      def max_probability(vector)
-        probs = predict_probabilities(vector)
-
-        probs.max
       end
 
       def to_h
@@ -90,16 +59,20 @@ module Lurn
         Matrix.rows(matrix)
       end
 
-      def joint_log_likelihood(vector, label)
-        label_index = @unique_labels.index(label)
+      def joint_log_likelihood(x)
+        jlls = []
 
-        vector = Vector.elements(vector.map { |e| e == true ? 1 : 0 })
-        probabilities = @probability_matrix.row(label_index)
-        neg_probs = probabilities.map { |prb| Math.log(1.0 - Math.exp(prb)) }
-        jll = vector.dot(probabilities - neg_probs)
-        jll += Math.log(@label_probabilities[label_index]) + neg_probs.sum
+        unique_labels.each_with_index do |label, label_index|
+          vector = Vector.elements(x.map { |e| e == true ? 1 : 0 })
+          probabilities = @probability_matrix.row(label_index)
+          neg_probs = probabilities.map { |prb| Math.log(1.0 - Math.exp(prb)) }
+          jll = vector.dot(probabilities - neg_probs)
+          jll += Math.log(@label_probabilities[label_index]) + neg_probs.sum
 
-        jll
+          jlls.push jll
+        end
+
+        jlls
       end
 
     end
