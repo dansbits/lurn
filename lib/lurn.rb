@@ -1,4 +1,3 @@
-require "lurn/version"
 require "daru"
 require "lurn/text/word_tokenizer"
 require "lurn/text/bernoulli_vectorizer"
@@ -12,5 +11,4 @@ require "lurn/neighbors/knn_regression"
 require "lurn/neighbors/knn_classifier"
 
 module Lurn
-    # Your code goes here...
 end

@@ -1,9 +1,7 @@
 # coding: utf-8
-require_relative "lib/lurn/version"
-
 Gem::Specification.new do |spec|
   spec.name          = "lurn"
-  spec.version       = Lurn::VERSION
+  spec.version       = "0.1.2"
   spec.authors       = ["daniel.carpenter"]
   spec.email         = ["daniel.carpenter01@gmail.com"]
 
