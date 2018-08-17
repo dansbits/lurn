@@ -24,7 +24,7 @@ module Lurn
       def predict_log_probabilities(vector)
         vector = Vector.elements(vector)
         jll = joint_log_likelihood(vector)
-        log_prob_x = Math.log(jll.map { |v| Math.exp(v) }.sum)
+        log_prob_x = Math.log(jll.map { |v| Math.exp(v) }.inject(:+))
         jll.map{ |v| v - log_prob_x }
       end
     end

@@ -46,7 +46,7 @@ module Lurn
       private
 
       def euclidian_distance(vector1, vector2)
-        Math.sqrt((vector1 - vector2).map { |v| (v.abs)**2 }.sum)
+        Math.sqrt((vector1 - vector2).map { |v| (v.abs)**2 }.inject(:+))
       end
 
     end

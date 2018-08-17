@@ -30,11 +30,11 @@ module Lurn
           label_frequency = labels.count(label)
 
           numerator = (value.to_f + 1.0)
-          denominator = count_matrix.row(row).sum + @feature_count
+          denominator = count_matrix.row(row).inject(:+) + @feature_count
           probability_matrix[row][col] = Math.log(numerator / denominator)
         end
 
-        Matrix.rows(probability_matrix)
+        probability_matrix
       end
 
       def build_count_matrix(vectors, labels)
@@ -52,7 +52,7 @@ module Lurn
       def joint_log_likelihood(vector)
         jlls = []
         @unique_labels.each_with_index do |label, label_index|
-          probabilities = @probability_matrix.row(label_index)
+          probabilities = @probability_matrix[label_index]
           jll = vector.dot(probabilities)
           jll += Math.log(@prior_probabilities[label_index])
           jlls.push(jll)

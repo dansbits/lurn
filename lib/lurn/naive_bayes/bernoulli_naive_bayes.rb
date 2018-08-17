@@ -67,7 +67,7 @@ module Lurn
           probabilities = @probability_matrix.row(label_index)
           neg_probs = probabilities.map { |prb| Math.log(1.0 - Math.exp(prb)) }
           jll = vector.dot(probabilities - neg_probs)
-          jll += Math.log(@label_probabilities[label_index]) + neg_probs.sum
+          jll += Math.log(@label_probabilities[label_index]) + neg_probs.inject(:+)
 
           jlls.push jll
         end

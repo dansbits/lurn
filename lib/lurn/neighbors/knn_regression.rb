@@ -12,7 +12,7 @@ module Lurn
       def predict(vector)
         _, neighboring_targets = nearest_neighbors(vector)
 
-        neighboring_targets.sum.to_f / neighboring_targets.length.to_f
+        neighboring_targets.inject(:+).to_f / neighboring_targets.length.to_f
       end
 
     end

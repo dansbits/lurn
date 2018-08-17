@@ -25,11 +25,11 @@ describe Lurn::NaiveBayes::MultinomialNaiveBayes do
       classifier.fit(vectors, classes)
 
       expect(classifier.prior_probabilities).to eq [3.0 / 4.0, 1.0 / 4.0]
-      china_vector = Vector[6.0 / 14.0, 2.0 / 14.0, 2.0 / 14.0, 2.0 / 14.0, 1.0 / 14.0, 1.0 / 14.0]
-      expect(classifier.probability_matrix.row(0)).to eq china_vector.map { |p| Math.log(p) }
+      china_vector = [6.0 / 14.0, 2.0 / 14.0, 2.0 / 14.0, 2.0 / 14.0, 1.0 / 14.0, 1.0 / 14.0]
+      expect(classifier.probability_matrix[0]).to eq china_vector.map { |p| Math.log(p) }
 
-      japan_vector = Vector[2.0/9.0,1.0/9.0,1.0/9.0,1.0/9.0,2.0/9.0,2.0/9.0]
-      expect(classifier.probability_matrix.row(1)).to eq japan_vector.map { |p| Math.log(p) }
+      japan_vector = [2.0/9.0,1.0/9.0,1.0/9.0,1.0/9.0,2.0/9.0,2.0/9.0]
+      expect(classifier.probability_matrix[1]).to eq japan_vector.map { |p| Math.log(p) }
     end
   end
 
