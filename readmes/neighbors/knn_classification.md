@@ -25,7 +25,7 @@ people's job title based on their income and years of eduction.
   # eduction and income
   predictors = people.map { |person| person[0..1] }
 
-  # extract annual income
+  # extract job title
   target_var = people.map { |person| person[2]}
   ```
 
