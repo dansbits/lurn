@@ -9,6 +9,7 @@ require "lurn/evaluation/classifier_evaluator"
 require "lurn/neighbors/knn_base"
 require "lurn/neighbors/knn_regression"
 require "lurn/neighbors/knn_classifier"
+require "lurn/structures/kd_tree"
 
 module Lurn
 end
