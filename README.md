@@ -4,7 +4,7 @@ Lurn is a ruby gem for performing machine learning tasks. The API and design pat
 
 # Documentation
 
-[www.lurnrb.com](www.lurnrb.com)
+[www.lurnrb.com](https://www.lurnrb.com)
 
 ## Installation
 
